@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:29:28
  * Author: Clay Risser
  * -----
- * Last Modified: 22-03-2022 12:45:50
+ * Last Modified: 22-03-2022 13:15:33
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -30,17 +30,26 @@ import CoinbaseWalletSDK, {
   CoinbaseWalletProvider,
 } from "@coinbase/wallet-sdk";
 import Errors from "./errors";
+import coinbaseSvg from "./images/coinbase.svg";
+import metamaskSvg from "./images/metamask.svg";
 import modalCss from "./modal.css";
 import modalHtml from "./modal.html";
+import walletconnectSvg from "./images/walletconnect.svg";
 
 export default class WalletProvider {
   public name: WalletProviderName;
 
   private options: WalletProviderOptions;
 
-  private walletConnectProvider: WalletConnectProvider;
+  private _walletConnectProvider: WalletConnectProvider | undefined;
 
-  private coinbaseProvider: CoinbaseWalletProvider;
+  private _coinbaseProvider: CoinbaseWalletProvider | undefined;
+
+  private svgs = {
+    "_every-wallet-coinbase-svg": coinbaseSvg,
+    "_every-wallet-metamask-svg": metamaskSvg,
+    "_every-wallet-walletconnect-svg": walletconnectSvg,
+  };
 
   constructor(
     options: Partial<WalletProviderOptions> = {},
@@ -67,14 +76,6 @@ export default class WalletProvider {
         ? WalletProviderName.MetaMask
         : WalletProviderName.WalletConnect;
     }
-    this.walletConnectProvider = new WalletConnectProvider(
-      WalletProvider.getWalletConnectProviderOptions(this.options)
-    );
-    this.coinbaseProvider = new CoinbaseWalletSDK({
-      appName: this.options.appName,
-      darkMode: false,
-      ...this.options.coinbase,
-    }).makeWeb3Provider(this.options.jsonRpcUrl, 1);
     if (this.options.modal) this.injectModal();
   }
 
@@ -118,6 +119,10 @@ export default class WalletProvider {
     const styleElement = document.createElement("style");
     styleElement.innerHTML = modalCss;
     divElement.appendChild(styleElement);
+    Object.entries(this.svgs).forEach(([id, svg]: [string, string]) => {
+      const svgElement = divElement.querySelector(`#${id}`);
+      if (svgElement) svgElement.innerHTML = svg;
+    });
     document.body.appendChild(divElement);
     window.onclick = (event) => {
       if (event.target == this.modalElement) this.closeModal();
@@ -130,6 +135,24 @@ export default class WalletProvider {
 
   async closeModal() {
     this.modalElement.style.display = "none";
+  }
+
+  private get walletConnectProvider() {
+    if (this._walletConnectProvider) return this._walletConnectProvider;
+    this._walletConnectProvider = new WalletConnectProvider(
+      WalletProvider.getWalletConnectProviderOptions(this.options)
+    );
+    return this._walletConnectProvider;
+  }
+
+  private get coinbaseProvider() {
+    if (this._coinbaseProvider) return this._coinbaseProvider;
+    this._coinbaseProvider = new CoinbaseWalletSDK({
+      appName: this.options.appName,
+      darkMode: false,
+      ...this.options.coinbase,
+    }).makeWeb3Provider(this.options.jsonRpcUrl, 1);
+    return this._coinbaseProvider;
   }
 
   private static getWalletConnectProviderOptions(

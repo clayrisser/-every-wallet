@@ -33,6 +33,7 @@
     "@babel/plugin-transform-runtime",
     "babel-plugin-transform-html-import-to-string",
     "babel-plugin-transform-css-import-to-string",
+    "babel-plugin-transform-svg-import-to-string",
     [
       "babel-plugin-module-resolver",
       {

@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "authenticator",
     "babelrc",
     "browserify",
     "cloc",
@@ -11,9 +12,11 @@
     "gnused",
     "infura",
     "jsx",
+    "keycloak",
     "kovan",
     "mainnet",
     "makefiles",
+    "metamask",
     "mjs",
     "mkpm",
     "nixpkgs",
@@ -22,6 +25,8 @@
     "ropsten",
     "rpc",
     "stdenv",
+    "svg",
+    "svgs",
     "tsx",
     "umd",
     "walletconnect",
