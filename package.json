@@ -1,0 +1,114 @@
+{
+  "name": "every-wallet",
+  "description": "connect dapp to every wallet",
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "author": "",
+  "private": true,
+  "sideEffects": false,
+  "keywords": [],
+  "homepage": "https://gitlab.com/risserlabs/internal/every-wallet",
+  "license": "Apache-2.0",
+  "files": [
+    "es",
+    "dist"
+  ],
+  "module": "es/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/risserlabs/internal/every-wallet"
+  },
+  "scripts": {
+    "build": "make -s build",
+    "clean": "make -s clean",
+    "coverage": "make -s coverage",
+    "format": "make -s format",
+    "lint": "make -s lint",
+    "prepare": "make -s prepare",
+    "purge": "make -s purge",
+    "spellcheck": "make -s spellcheck",
+    "start": "make -s start",
+    "test": "make -s test"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.17.8",
+    "@coinbase/wallet-sdk": "^3.0.5",
+    "@walletconnect/types": "^1.7.5",
+    "@walletconnect/web3-provider": "^1.7.5",
+    "core-js": "^3.21.1",
+    "ethers": "^5.6.1",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
+    "@babel/node": "^7.16.8",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-decorators": "^7.17.8",
+    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
+    "@babel/plugin-proposal-private-methods": "^7.16.11",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
+    "@typescript-eslint/parser": "^5.16.0",
+    "assert": "^2.0.0",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-inline-import": "^3.0.0",
+    "babel-plugin-macros": "^3.1.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-transform-css-import-to-string": "^0.0.2",
+    "babel-plugin-transform-html-import-to-string": "^2.0.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
+    "buffer": "^6.0.3",
+    "cspell": "^5.19.2",
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb-typescript": "^16.1.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-spellcheck": "^0.0.19",
+    "https-browserify": "^1.0.0",
+    "jest": "^27.5.1",
+    "jest-sonar-reporter": "^2.0.0",
+    "lockfile-lint": "^4.7.4",
+    "nodemon": "^2.0.15",
+    "os-browserify": "^0.3.0",
+    "parcel": "^2.4.0",
+    "prettier": "^2.6.0",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2",
+    "url": "^0.11.0",
+    "util": "^0.12.4",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "packageManager": "yarn@3.2.0",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "eslintIgnore": [
+    "dist",
+    "es",
+    "src/generated"
+  ],
+  "jest": {
+    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
+    "testEnvironment": "node",
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "<rootDir>/dist/",
+      "<rootDir>/es/"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/_setup.ts"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": "node_modules/.tmp/reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  }
+}
