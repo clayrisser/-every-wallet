@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:29:28
  * Author: Clay Risser
  * -----
- * Last Modified: 22-03-2022 11:55:38
+ * Last Modified: 24-03-2022 09:41:52
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -22,11 +22,11 @@
  * limitations under the License.
  */
 
-import WalletProvider from "./walletProvider";
+import EveryWallet from "./everyWallet";
 import Errors from "./errors";
 
 export { Errors };
 
-export * from "./walletProvider";
+export * from "./everyWallet";
 
-export default WalletProvider;
+export default EveryWallet;

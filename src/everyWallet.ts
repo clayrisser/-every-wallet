@@ -1,10 +1,10 @@
 /**
- * File: /src/walletProvider.ts
+ * File: /src/everyWallet.ts
  * Project: every-wallet
  * File Created: 22-03-2022 11:29:28
  * Author: Clay Risser
  * -----
- * Last Modified: 24-03-2022 09:07:29
+ * Last Modified: 24-03-2022 09:43:47
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -36,7 +36,7 @@ import modalCss from "./modal.css";
 import modalHtml from "./modal.html";
 import walletconnectSvg from "./images/walletconnect.svg";
 
-export default class WalletProvider {
+export default class EveryWallet {
   public name: WalletProviderName;
 
   private options: WalletProviderOptions;
@@ -75,7 +75,7 @@ export default class WalletProvider {
         ? options.modal
         : "_modal-id",
     };
-    this.options.jsonRpcUrl = WalletProvider.getDefaultJsonRpcUrl(this.options);
+    this.options.jsonRpcUrl = EveryWallet.getDefaultJsonRpcUrl(this.options);
     if (name) {
       this.name = name;
     } else {
@@ -229,7 +229,7 @@ export default class WalletProvider {
     // NOTE: do not memoize because it will not reinitialize correctly
     // if (this._walletConnectProvider) return this._walletConnectProvider;
     this._walletConnectProvider = new WalletConnectProvider(
-      WalletProvider.getWalletConnectProviderOptions(this.options)
+      EveryWallet.getWalletConnectProviderOptions(this.options)
     );
     return this._walletConnectProvider;
   }

@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:27:28
  * Author: Clay Risser
  * -----
- * Last Modified: 22-03-2022 11:32:55
+ * Last Modified: 24-03-2022 09:41:19
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -45,7 +45,7 @@ module.exports = {
   output: {
     filename: "bundle.js",
     library: {
-      name: "WalletProvider",
+      name: "EveryWallet",
       type: "assign",
       export: "default",
     },
