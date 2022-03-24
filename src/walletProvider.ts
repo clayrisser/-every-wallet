@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:29:28
  * Author: Clay Risser
  * -----
- * Last Modified: 22-03-2022 13:15:33
+ * Last Modified: 24-03-2022 09:07:29
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -44,6 +44,13 @@ export default class WalletProvider {
   private _walletConnectProvider: WalletConnectProvider | undefined;
 
   private _coinbaseProvider: CoinbaseWalletProvider | undefined;
+
+  private _modalConnectedCallbacks: ((
+    err?: Error,
+    provider?: Provider
+  ) => unknown)[] = [];
+
+  connectedProvider: Provider | undefined;
 
   private svgs = {
     "_every-wallet-coinbase-svg": coinbaseSvg,
@@ -93,7 +100,10 @@ export default class WalletProvider {
 
   async connectCoinbase() {
     await this.coinbaseProvider.request({ method: "eth_requestAccounts" });
-    return new ethers.providers.Web3Provider(this.coinbaseProvider as any);
+    this.connectedProvider = new ethers.providers.Web3Provider(
+      this.coinbaseProvider as any
+    );
+    return this.connectedProvider;
   }
 
   async connectMetaMask() {
@@ -104,12 +114,33 @@ export default class WalletProvider {
       throw Errors.WalletConnectionFailed;
     }
     await window.ethereum.request({ method: "eth_requestAccounts" });
-    return new ethers.providers.Web3Provider(window.ethereum as any);
+    this.connectedProvider = new ethers.providers.Web3Provider(
+      window.ethereum as any
+    );
+    return this.connectedProvider;
   }
 
   async connectWalletConnect() {
     await this.walletConnectProvider.enable();
-    return new ethers.providers.Web3Provider(this.walletConnectProvider);
+    this.connectedProvider = new ethers.providers.Web3Provider(
+      this.walletConnectProvider
+    );
+    return this.connectedProvider;
+  }
+
+  async connectWithModal(): Promise<Provider> {
+    this._modalConnectedCallbacks = [];
+    this.openModal();
+    return new Promise((resolve, reject) => {
+      this._modalConnectedCallbacks.push((err?: Error, provider?: Provider) => {
+        if (!err && !provider) err = Errors.WalletConnectionFailed;
+        if (err) {
+          this.closeModal();
+          return reject(err);
+        }
+        return resolve(provider as Provider);
+      });
+    });
   }
 
   private injectModal() {
@@ -127,18 +158,76 @@ export default class WalletProvider {
     window.onclick = (event) => {
       if (event.target == this.modalElement) this.closeModal();
     };
+    window._everyWalletConnectMetaMask = async () => {
+      let error: Error | undefined;
+      try {
+        this.closeModal();
+        await this.connectMetaMask();
+      } catch (err) {
+        error = err as Error;
+      }
+      if (!this.connectedProvider && !error) {
+        error = Errors.WalletConnectionFailed;
+      }
+      this._modalConnectedCallbacks.forEach(
+        (connectedCallback: (err?: Error, provider?: Provider) => unknown) => {
+          connectedCallback(undefined, this.connectedProvider);
+        }
+      );
+      if (error) throw error;
+      return this.connectedProvider as Provider;
+    };
+    window._everyWalletConnectCoinbase = async () => {
+      let error: Error | undefined;
+      try {
+        this.closeModal();
+        await this.connectCoinbase();
+      } catch (err) {
+        error = err as Error;
+      }
+      if (!this.connectedProvider && !error) {
+        error = Errors.WalletConnectionFailed;
+      }
+      this._modalConnectedCallbacks.forEach(
+        (connectedCallback: (err?: Error, provider?: Provider) => unknown) => {
+          connectedCallback(undefined, this.connectedProvider);
+        }
+      );
+      if (error) throw error;
+      return this.connectedProvider as Provider;
+    };
+    window._everyWalletConnectWalletConnect = async () => {
+      let error: Error | undefined;
+      try {
+        this.closeModal();
+        await this.connectWalletConnect();
+      } catch (err) {
+        error = err as Error;
+      }
+      if (!this.connectedProvider && !error) {
+        error = Errors.WalletConnectionFailed;
+      }
+      this._modalConnectedCallbacks.forEach(
+        (connectedCallback: (err?: Error, provider?: Provider) => unknown) => {
+          connectedCallback(error, this.connectedProvider);
+        }
+      );
+      if (error) throw error;
+      return this.connectedProvider as Provider;
+    };
   }
 
-  async openModal() {
+  private openModal() {
     this.modalElement.style.display = "block";
   }
 
-  async closeModal() {
+  private closeModal() {
     this.modalElement.style.display = "none";
   }
 
   private get walletConnectProvider() {
-    if (this._walletConnectProvider) return this._walletConnectProvider;
+    // NOTE: do not memoize because it will not reinitialize correctly
+    // if (this._walletConnectProvider) return this._walletConnectProvider;
     this._walletConnectProvider = new WalletConnectProvider(
       WalletProvider.getWalletConnectProviderOptions(this.options)
     );
@@ -215,3 +304,11 @@ export interface WalletProviderOptions {
 }
 
 export type Network = "mainnet" | "ropsten" | "rinkeby" | "kovan";
+
+declare global {
+  interface Window {
+    _everyWalletConnectCoinbase(): Promise<Provider>;
+    _everyWalletConnectMetaMask(): Promise<Provider>;
+    _everyWalletConnectWalletConnect(): Promise<Provider>;
+  }
+}

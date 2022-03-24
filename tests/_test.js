@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:48:58
  * Author: Clay Risser
  * -----
- * Last Modified: 22-03-2022 12:44:05
+ * Last Modified: 24-03-2022 08:58:25
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -30,7 +30,12 @@ var WalletProvider = window.WalletProvider;
 var walletProvider = new WalletProvider(options);
 
 function connectWallet() {
-  walletProvider.openModal();
+  walletProvider
+    .connectWithModal()
+    .then((provider) => {
+      console.log("provider", provider);
+    })
+    .catch(console.error);
 }
 
 window.connectWallet = connectWallet;
