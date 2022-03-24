@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:29:28
  * Author: Clay Risser
  * -----
- * Last Modified: 24-03-2022 09:52:10
+ * Last Modified: 24-03-2022 10:02:25
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -110,6 +110,7 @@ export default class EveryWallet {
 
   async connectMetaMask() {
     if (!window.ethereum?.isMetaMask) {
+      window.open("https://metamask.io", "_blank");
       throw Errors.MetaMaskNotInstalled;
     }
     if (!window.ethereum.request) {
