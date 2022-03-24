@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:29:28
  * Author: Clay Risser
  * -----
- * Last Modified: 24-03-2022 09:43:47
+ * Last Modified: 24-03-2022 09:52:10
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -50,13 +50,15 @@ export default class EveryWallet {
     provider?: Provider
   ) => unknown)[] = [];
 
-  connectedProvider: Provider | undefined;
-
   private svgs = {
     "_every-wallet-coinbase-svg": coinbaseSvg,
     "_every-wallet-metamask-svg": metamaskSvg,
     "_every-wallet-walletconnect-svg": walletconnectSvg,
   };
+
+  public connectedProvider: Provider | undefined;
+
+  public ethers: typeof ethers = ethers;
 
   constructor(
     options: Partial<WalletProviderOptions> = {},
