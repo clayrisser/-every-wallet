@@ -22,6 +22,7 @@
     "nixpkgs",
     "rinkeby",
     "risser",
+    "risserlabs",
     "ropsten",
     "rpc",
     "stdenv",

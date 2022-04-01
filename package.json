@@ -1,17 +1,17 @@
 {
-  "name": "every-wallet",
+  "name": "@risserlabs/every-wallet",
   "description": "connect dapp to every wallet",
   "version": "0.0.1",
-  "main": "dist/main.js",
-  "author": "",
-  "private": true,
+  "main": "lib/index.js",
+  "private": false,
   "sideEffects": false,
   "keywords": [],
   "homepage": "https://gitlab.com/risserlabs/internal/every-wallet",
   "license": "Apache-2.0",
   "files": [
+    "dist",
     "es",
-    "dist"
+    "lib"
   ],
   "module": "es/main.js",
   "repository": {
@@ -111,5 +111,9 @@
     "reportPath": "node_modules/.tmp/reports",
     "reportFile": "test-report.xml",
     "indent": 4
+  },
+  "publishConfig": {
+    "@risserlabs:registry": "https://gitlab.com/api/v4/projects/34708768/packages/npm/",
+    "registry": "https://gitlab.com/api/v4/projects/34708768/packages/npm/"
   }
 }
