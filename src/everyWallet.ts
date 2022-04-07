@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:29:28
  * Author: Clay Risser
  * -----
- * Last Modified: 24-03-2022 10:02:25
+ * Last Modified: 07-04-2022 05:18:57
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -132,21 +132,25 @@ export default class EveryWallet {
   }
 
   async connectWithModal(): Promise<Provider> {
-    this._modalConnectedCallbacks = [];
-    this.openModal();
+    window._everyWalletInstance._modalConnectedCallbacks = [];
+    window._everyWalletInstance.openModal();
     return new Promise((resolve, reject) => {
-      this._modalConnectedCallbacks.push((err?: Error, provider?: Provider) => {
-        if (!err && !provider) err = Errors.WalletConnectionFailed;
-        if (err) {
-          this.closeModal();
-          return reject(err);
+      window._everyWalletInstance._modalConnectedCallbacks.push(
+        (err?: Error, provider?: Provider) => {
+          if (!err && !provider) err = Errors.WalletConnectionFailed;
+          if (err) {
+            window._everyWalletInstance.closeModal();
+            return reject(err);
+          }
+          return resolve(provider as Provider);
         }
-        return resolve(provider as Provider);
-      });
+      );
     });
   }
 
   private injectModal() {
+    if (window._everyWalletInstance) return;
+    window._everyWalletInstance = this;
     const divElement = document.createElement("div");
     divElement.id = this.modalId;
     divElement.innerHTML = modalHtml;
@@ -313,5 +317,6 @@ declare global {
     _everyWalletConnectCoinbase(): Promise<Provider>;
     _everyWalletConnectMetaMask(): Promise<Provider>;
     _everyWalletConnectWalletConnect(): Promise<Provider>;
+    _everyWalletInstance: EveryWallet;
   }
 }
