@@ -1,7 +1,7 @@
 {
   "name": "@risserlabs/every-wallet",
   "description": "connect dapp to every wallet",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": "lib/index.js",
   "sideEffects": false,
   "keywords": [],
