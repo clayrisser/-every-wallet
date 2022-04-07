@@ -4,7 +4,7 @@
  * File Created: 22-03-2022 11:29:28
  * Author: Clay Risser
  * -----
- * Last Modified: 07-04-2022 14:15:58
+ * Last Modified: 07-04-2022 05:18:57
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -66,7 +66,6 @@ export default class EveryWallet {
   ) {
     this.options = {
       ...options,
-      alwaysPrompt: false,
       appName: "",
       coinbase: {},
       jsonRpcUrl: "",
@@ -102,11 +101,7 @@ export default class EveryWallet {
   }
 
   async connectCoinbase() {
-    if (this.options.alwaysPrompt) {
-      await this.coinbaseProvider.request({ method: "eth_requestAccounts" });
-    } else {
-      await this.coinbaseProvider.request({ method: "eth_requestAccounts" });
-    }
+    await this.coinbaseProvider.request({ method: "eth_requestAccounts" });
     this.connectedProvider = new ethers.providers.Web3Provider(
       this.coinbaseProvider as any
     );
@@ -138,7 +133,6 @@ export default class EveryWallet {
 
   async connectWithModal(): Promise<Provider> {
     window._everyWalletInstance._modalConnectedCallbacks = [];
-    window._everyWalletInstance.options = this.options;
     window._everyWalletInstance.openModal();
     return new Promise((resolve, reject) => {
       window._everyWalletInstance._modalConnectedCallbacks.push(
@@ -307,7 +301,6 @@ export enum WalletProviderName {
 }
 
 export interface WalletProviderOptions {
-  alwaysPrompt: boolean;
   appName: string;
   coinbase: Partial<CoinbaseWalletSDKOptions>;
   infuraId?: string;
