@@ -3,7 +3,6 @@
   "description": "connect dapp to every wallet",
   "version": "0.0.2",
   "main": "lib/index.js",
-  "private": false,
   "sideEffects": false,
   "keywords": [],
   "homepage": "https://gitlab.com/risserlabs/internal/every-wallet",
